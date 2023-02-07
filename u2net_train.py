@@ -48,12 +48,13 @@ def muti_bce_loss_fusion(d0, d1, d2, d3, d4, d5, d6, labels_v):
 
 model_name = 'u2net' #'u2netp'
 
-data_dir = os.path.join(os.getcwd(), 'train_data' + os.sep)
-tra_image_dir = os.path.join('DUTS', 'DUTS-TR', 'DUTS-TR', 'im_aug' + os.sep)
-tra_label_dir = os.path.join('DUTS', 'DUTS-TR', 'DUTS-TR', 'gt_aug' + os.sep)
+data_dir = os.path.join(os.getcwd(), 'train' + os.sep)
+mask_dir = os.path.join(os.getcwd(), 'train_masks' + os.sep)
+# tra_image_dir = os.path.join('DUTS', 'DUTS-TR', 'DUTS-TR', 'im_aug' + os.sep)
+# tra_label_dir = os.path.join('DUTS', 'DUTS-TR', 'DUTS-TR', 'gt_aug' + os.sep)
 
 image_ext = '.jpg'
-label_ext = '.png'
+label_ext = '_mask.gif'
 
 model_dir = os.path.join(os.getcwd(), 'saved_models', model_name + os.sep)
 
@@ -63,7 +64,7 @@ batch_size_val = 1
 train_num = 0
 val_num = 0
 
-tra_img_name_list = glob.glob(data_dir + tra_image_dir + '*' + image_ext)
+tra_img_name_list = glob.glob(data_dir + '*' + image_ext)  # + tra_image_dir
 
 tra_lbl_name_list = []
 for img_path in tra_img_name_list:
@@ -75,7 +76,7 @@ for img_path in tra_img_name_list:
 	for i in range(1,len(bbb)):
 		imidx = imidx + "." + bbb[i]
 
-	tra_lbl_name_list.append(data_dir + tra_label_dir + imidx + label_ext)
+	tra_lbl_name_list.append(mask_dir + imidx + label_ext) # + tra_label_dir
 
 print("---")
 print("train images: ", len(tra_img_name_list))
