@@ -104,6 +104,8 @@ elif(model_name=='u2netp'):
 if torch.cuda.is_available():
     net.cuda()
 
+net.load_state_dict(torch.load('./saved_models/u2net_base.pth'))
+
 # ------- 4. define optimizer --------
 print("---define optimizer...")
 optimizer = optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
@@ -157,7 +159,7 @@ for epoch in range(0, epoch_num):
 
         if ite_num % save_frq == 0:
 
-            torch.save(net.state_dict(), model_dir + model_name+"_bce_itr_%d_train_%3f_tar_%3f.pth" % (ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val))
+            torch.save(net.state_dict(), '/content/drive/MyDrive/u2net_models/'+model_name+"_bce_itr_%d_train_%3f_tar_%3f.pth" % (ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val))
             running_loss = 0.0
             running_tar_loss = 0.0
             net.train()  # resume train
