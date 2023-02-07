@@ -161,4 +161,3 @@ for epoch in range(0, epoch_num):
             running_tar_loss = 0.0
             net.train()  # resume train
             ite_num4val = 0
-
