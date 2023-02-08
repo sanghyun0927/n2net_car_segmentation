@@ -24,6 +24,7 @@ from data_loader import SalObjDataset
 from model import U2NET
 from model import U2NETP
 
+
 # ------- 1. define loss function --------
 
 bce_loss = nn.BCELoss(size_average=True)
@@ -59,7 +60,7 @@ label_ext = '_mask.gif'
 model_dir = os.path.join(os.getcwd(), 'saved_models', model_name + os.sep)
 
 epoch_num = 100000
-batch_size_train = 32
+batch_size_train = 16
 batch_size_val = 1
 train_num = 0
 val_num = 0
@@ -105,6 +106,20 @@ if torch.cuda.is_available():
     net.cuda()
 
 net.load_state_dict(torch.load('./saved_models/u2net_base.pth'))
+
+# -------------freeze layers----------
+net.stage1.requires_grad = False
+net.stage2.requires_grad = False
+net.pool12.requires_grad = False
+net.pool23.requires_grad = False
+net.stage2d.requires_grad = False
+net.stage1d.requires_grad = False
+# net.side1.requires_grad = False
+# net.side2.requires_grad = False
+# net.side3.requires_grad = False
+net.side4.requires_grad = False
+net.side5.requires_grad = False
+net.side6.requires_grad = False
 
 # ------- 4. define optimizer --------
 print("---define optimizer...")
