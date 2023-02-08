@@ -114,12 +114,13 @@ net.pool12.requires_grad = False
 net.pool23.requires_grad = False
 net.stage2d.requires_grad = False
 net.stage1d.requires_grad = False
-# net.side1.requires_grad = False
-# net.side2.requires_grad = False
-# net.side3.requires_grad = False
+net.side1.requires_grad = False
+net.side2.requires_grad = False
+net.side3.requires_grad = False
 net.side4.requires_grad = False
 net.side5.requires_grad = False
 net.side6.requires_grad = False
+net.outconv.requires_grad = False
 
 # ------- 4. define optimizer --------
 print("---define optimizer...")
