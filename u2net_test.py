@@ -21,6 +21,7 @@ from data_loader import SalObjDataset
 from model import U2NET # full size version 173.6 MB
 from model import U2NETP # small version u2net 4.7 MB
 
+from Utils.removebg import post_process, alpha_matting_cutout, naive_cutout
 # normalize the predicted SOD probability map
 def normPRED(d):
     ma = torch.max(d)
@@ -30,18 +31,30 @@ def normPRED(d):
 
     return dn
 
-def save_output(image_name,pred,d_dir):
+def save_output(image_name,pred,d_dir,f_dir):
 
     predict = pred
     predict = predict.squeeze()
     predict_np = predict.cpu().data.numpy()
 
-    im = Image.fromarray(predict_np*255).convert('RGB')
+    im = Image.fromarray(predict_np*255).convert('L')
     img_name = image_name.split(os.sep)[-1]
-    image = io.imread(image_name)
-    imo = im.resize((image.shape[1],image.shape[0]),resample=Image.BILINEAR)
+    image = Image.open(image_name)
+    imo = im.resize((np.shape(image)[1],np.shape(image)[0]),resample=Image.BILINEAR)
 
-    pb_np = np.array(imo)
+    mask = post_process(np.array(imo))
+    try:
+        cutout = alpha_matting_cutout(
+            image,
+            mask,
+            foreground_threshold=240,
+            background_threshold=10,
+            erode_structure_size=10,
+        )
+    except ValueError:
+        cutout = naive_cutout(image, Image.fromarray(mask))
+
+    img = cutout
 
     aaa = img_name.split(".")
     bbb = aaa[0:-1]
@@ -50,18 +63,19 @@ def save_output(image_name,pred,d_dir):
         imidx = imidx + "." + bbb[i]
 
     imo.save(d_dir+imidx+'.png')
-
+    img.save(f_dir+imidx+'.png')
 def main():
 
     # --------- 1. get image path and name ---------
-    model_name='u2car_v0.0'#u2netp
+    model_name='u2car_v0.2'#u2netp
 
     image_dir = os.path.join(os.getcwd(), 'images')
     prediction_dir = os.path.join(os.getcwd(), 'outputs', model_name + os.sep)
+    foreground_dir = os.path.join(os.getcwd(), 'final', model_name + os.sep)
     model_dir = os.path.join(os.getcwd(), 'saved_models', model_name + '.pth')
 
     img_name_list = glob.glob(image_dir + os.sep + '*')
-    print(img_name_list)
+    # print(img_name_list)
 
     # --------- 2. dataloader ---------
     #1. dataloader
@@ -112,7 +126,7 @@ def main():
         # save results to test_results folder
         if not os.path.exists(prediction_dir):
             os.makedirs(prediction_dir, exist_ok=True)
-        save_output(img_name_list[i_test],pred,prediction_dir)
+        save_output(img_name_list[i_test],pred,prediction_dir,foreground_dir)
 
         del d1,d2,d3,d4,d5,d6,d7
 
