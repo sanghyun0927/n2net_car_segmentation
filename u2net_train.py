@@ -159,7 +159,7 @@ for epoch in range(0, epoch_num):
 
         if ite_num % save_frq == 0:
 
-            torch.save(net.state_dict(), '/content/drive/MyDrive/u2net_models/'+model_name+"_bce_itr_%d_train_%3f_tar_%3f.pth" % (ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val))
+            torch.save(net.state_dict(), '/content/drive/MyDrive/u2net_models/batch32/'+model_name+"_bce_itr_%d_train_%3f_tar_%3f.pth" % (ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val))
             running_loss = 0.0
             running_tar_loss = 0.0
             net.train()  # resume train
