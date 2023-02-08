@@ -36,6 +36,8 @@ notification.mp3
 /input/*
 /images/*
 /test_data/**/*
+/outputs/**/*
+/final/**/*
 
 .ipynb_checkpoints
 */.ipynb_checkpoints/*

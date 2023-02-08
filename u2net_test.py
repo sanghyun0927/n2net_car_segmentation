@@ -54,13 +54,11 @@ def save_output(image_name,pred,d_dir):
 def main():
 
     # --------- 1. get image path and name ---------
-    model_name='u2net'#u2netp
+    model_name='u2car_v0.0'#u2netp
 
-
-
-    image_dir = os.path.join(os.getcwd(), 'test_data', 'test_images')
-    prediction_dir = os.path.join(os.getcwd(), 'test_data', model_name + '_results' + os.sep)
-    model_dir = os.path.join(os.getcwd(), 'saved_models', model_name, model_name + '.pth')
+    image_dir = os.path.join(os.getcwd(), 'images')
+    prediction_dir = os.path.join(os.getcwd(), 'outputs', model_name + os.sep)
+    model_dir = os.path.join(os.getcwd(), 'saved_models', model_name + '.pth')
 
     img_name_list = glob.glob(image_dir + os.sep + '*')
     print(img_name_list)
@@ -78,12 +76,12 @@ def main():
                                         num_workers=1)
 
     # --------- 3. model define ---------
-    if(model_name=='u2net'):
-        print("...load U2NET---173.6 MB")
-        net = U2NET(3,1)
-    elif(model_name=='u2netp'):
-        print("...load U2NEP---4.7 MB")
-        net = U2NETP(3,1)
+    # if(model_name=='u2net'):
+    print("...load U2NET---173.6 MB")
+    net = U2NET(3,1)
+    # elif(model_name=='u2netp'):
+    #     print("...load U2NEP---4.7 MB")
+    #     net = U2NETP(3,1)
 
     if torch.cuda.is_available():
         net.load_state_dict(torch.load(model_dir))
