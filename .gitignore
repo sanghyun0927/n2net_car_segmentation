@@ -2,6 +2,10 @@ __pycache__
 *.ckpt
 *.safetensors
 *.pth
+*.onnx
+/*/*.png
+/*/*.jpg
+/*/*.gif
 /ESRGAN/*
 /SwinIR/*
 /repositories

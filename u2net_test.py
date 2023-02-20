@@ -67,7 +67,7 @@ def save_output(image_name,pred,d_dir,f_dir):
 def main():
 
     # --------- 1. get image path and name ---------
-    model_name='u2car_v0.2'#u2netp
+    model_name='u2car_v1.0'#u2netp
 
     image_dir = os.path.join(os.getcwd(), 'images')
     prediction_dir = os.path.join(os.getcwd(), 'outputs', model_name + os.sep)

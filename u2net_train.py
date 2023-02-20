@@ -24,6 +24,7 @@ from data_loader import SalObjDataset
 from model import U2NET
 from model import U2NETP
 
+from torchsummary import summary
 
 # ------- 1. define loss function --------
 
@@ -60,7 +61,7 @@ label_ext = '_mask.gif'
 model_dir = os.path.join(os.getcwd(), 'saved_models', model_name + os.sep)
 
 epoch_num = 100000
-batch_size_train = 16
+batch_size_train = 32
 batch_size_val = 1
 train_num = 0
 val_num = 0
@@ -105,8 +106,8 @@ elif(model_name=='u2netp'):
 if torch.cuda.is_available():
     net.cuda()
 
-net.load_state_dict(torch.load('./saved_models/u2net_base.pth'))
-
+net.load_state_dict(torch.load('saved_models/u2net.pth'))
+summary(net, (3,320,230))
 # -------------freeze layers----------
 net.stage1.requires_grad = False
 net.stage2.requires_grad = False
