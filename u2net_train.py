@@ -61,7 +61,7 @@ label_ext = '_mask.gif'
 model_dir = os.path.join(os.getcwd(), 'saved_models', model_name + os.sep)
 
 epoch_num = 100000
-batch_size_train = 16
+batch_size_train = 32
 batch_size_val = 1
 train_num = 0
 val_num = 0
@@ -125,7 +125,7 @@ net.outconv.requires_grad = False
 
 # ------- 4. define optimizer --------
 print("---define optimizer...")
-optimizer = optim.Adam(net.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
+optimizer = optim.Adam(net.parameters(), lr=0.0005, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
 
 # ------- 5. training process --------
 print("---start training...")
@@ -176,7 +176,7 @@ for epoch in range(0, epoch_num):
 
         if ite_num % save_frq == 0:
 
-            torch.save(net.state_dict(), '/content/drive/MyDrive/u2net_models/batch16/'+model_name+"_bce_itr_%d_train_%3f_tar_%3f.pth" % (ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val))
+            torch.save(net.state_dict(), '/content/drive/MyDrive/u2net_models/batch32/'+model_name+"_bce_itr_%d_train_%3f_tar_%3f.pth" % (ite_num, running_loss / ite_num4val, running_tar_loss / ite_num4val))
             running_loss = 0.0
             running_tar_loss = 0.0
             net.train()  # resume train
